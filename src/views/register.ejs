@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <form method="POST" action="/login" class="box">
+          <h1>Login</h1>
+          <input type="text" name="username" placeholder="Username" required />
+          <input type="password" name="password" placeholder="Password" required />
+          <div class="checkbox d-flex justify-content-center custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="switch1" name="laporan" />
+            <label class="custom-control-label" for="switch1">Gunakan Data Sesuai Laporan</label>
+          </div>
+          <input type="submit" value="Login" />
+          <input value="Register" href="/login/register" />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<% const toastSuccess=messages.success %> <% const toastError=messages.error %>
+<script>
+  $(document).ready(function () {
+    const toastSuccess = '<%= toastSuccess %>';
+    const toastError = '<%= toastError %>';
+    toastSuccess != '' && notification('success', toastSuccess);
+    toastError != '' && notification('error', toastError);
+  });
+</script>

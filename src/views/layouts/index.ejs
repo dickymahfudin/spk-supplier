@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%- title%></title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
+    <link rel="stylesheet" href="/vendor/datatables/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" href="/vendor/datatables/dataTables.responsive.bootstrap4.css" />
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="/vendor/toastr/toastr.css" />
+    <script src="/js/toast.js"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand" href="dashboard">DataComp</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item <%= title === 'Dashboard' && 'active' %>">
+              <a class="nav-link" href="dashboard">Dashboard</a>
+            </li>
+            <li class="nav-item <%= title === 'Supplier' && 'active' %>">
+              <a class="nav-link" href="/supplier">Supplier</a>
+            </li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0" action="/login/logout" method="POST">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+              <i class="fas fa-sign-out-alt"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </nav>
+    <div class="container mt-4">
+      <main><%- body %></main>
+    </div>
+
+    <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="/vendor/datatables/dataTables.responsive.bootstrap4.js"></script>
+    <script src="/vendor/datatables/dataTables.responsive.min.js"></script>
+
+    <script src="/js/datatables.js"></script>
+    <script src="/vendor/toastr/toastr.js"></script>
+  </body>
+</html>

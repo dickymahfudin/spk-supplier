@@ -1,0 +1,88 @@
+<!-- Content Row -->
+<div class="row">
+  <div class="col-xl-6 col-md-6 mb-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Supplier</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800"><%= location %></div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-users fa-3x"></i>
+            <!-- <i class="fas fa-map-marker-alt fa-2x text-gray-300"></i> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="col-xl-4 col-md-6 mb-4">
+    <div class="card border-left-success shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Criteria</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800"><%= criteria %></div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-location-arrow fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <div class="col-xl-6 col-md-6 mb-4">
+    <div class="card border-left-info shadow h-100 py-2">
+      <div class="card-body">
+        <div class="row no-gutters align-items-center">
+          <div class="col mr-2">
+            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Peringkat Pertama</div>
+            <div class="row no-gutters align-items-center">
+              <div class="col-auto">
+                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><%=rangking%></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-auto">
+            <i class="fas fa-trophy fa-3x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% if(location != 0) { %>
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h4>Data Lokasi</h4>
+    <a href="/hitung/hitung" class="float-right btn btn-sm btn-primary"><i class="fas fa-calculator"></i> Hitung</a>
+  </div>
+  <div class="card-body">
+    <table class="table table-bordered" id="dataTable" url="/dashboard/table" width="100%" cellspacing="0"></table>
+  </div>
+</div>
+<p>
+  <button
+    class="btn btn-primary"
+    type="button"
+    data-toggle="collapse"
+    data-target="#collapseExample"
+    aria-expanded="false"
+    aria-controls="collapseExample"
+  >
+    Rumus
+  </button>
+</p>
+<% } %> <% const toastSuccess=messages.success %> <% const toastError=messages.error %>
+<script>
+  $(document).ready(function () {
+    const toastSuccess = '<%= toastSuccess %>';
+    const toastError = '<%= toastError %>';
+    toastSuccess != '' && notification('success', toastSuccess);
+    toastError != '' && notification('error', toastError);
+  });
+</script>
+<%- include('./rumus.ejs') %>
