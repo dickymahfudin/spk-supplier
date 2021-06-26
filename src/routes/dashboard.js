@@ -11,15 +11,8 @@ router.get('/', async (req, res, next) => {
   const username = req.session.username;
   const locations = await link.getAll({ user_id });
 
-  // const locations = await supplier.findAll({
-  //   where: { user_id },
-  //   order: [
-  //     ['hasil', 'ASC'],
-  //     ['name', 'ASC'],
-  //   ],
-  // });
   const criterias = await criteria.getAll(user_id);
-  const rangking = locations.length != 0 && locations[0].hasil ? locations[0].name : '';
+  const rangking = locations.length != 0 && locations[0].supplier.hasil ? locations[0].supplier.name : '';
   let tempData, datas, hitungs, hasils;
   if (locations.length > 1) {
     hasils = locations[0].supplier.hasil;
