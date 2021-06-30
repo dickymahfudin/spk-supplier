@@ -10,9 +10,16 @@ router.get('/', async (req, res, next) => {
   const user_id = req.session.userId;
   const username = req.session.username;
   const locations = await link.getAll({ user_id });
+  const supplierLength = await supplier.findAll({
+    where: { user_id },
+    order: [
+      ['hasil', 'DESC'],
+      ['name', 'DESC'],
+    ],
+  });
 
   const criterias = await criteria.getAll(user_id);
-  const rangking = locations.length != 0 && locations[0].supplier.hasil ? locations[0].supplier.name : '';
+  const rangking = supplierLength.length != 0 && supplierLength[0].hasil ? supplierLength[0].name : '';
   let tempData, datas, hitungs, hasils;
   if (locations.length > 1) {
     hasils = locations[0].supplier.hasil;
@@ -23,7 +30,7 @@ router.get('/', async (req, res, next) => {
   res.render('dashboard', {
     title: 'Dashboard',
     username,
-    location: locations.length,
+    location: supplierLength.length,
     criteria: criterias.length,
     rangking,
     hitungs,

@@ -6,9 +6,9 @@ const criterias = async user_id => {
   const dataCriteria = [
     { user_id, name: 'Kualitas', bobot: 0.25, createdAt, updatedAt },
     { user_id, name: 'Harga', bobot: 0.25, createdAt, updatedAt },
-    { user_id, name: 'Jarak', bobot: 0.15, createdAt, updatedAt },
+    { user_id, name: 'Biaya Pengiriman', bobot: 0.15, createdAt, updatedAt },
     { user_id, name: 'Waktu Proses', bobot: 0.15, createdAt, updatedAt },
-    { user_id, name: 'Waktu Pengiriman', bobot: 0.1, createdAt, updatedAt },
+    { user_id, name: 'Layanan', bobot: 0.1, createdAt, updatedAt },
     { user_id, name: 'Jaminan', bobot: 0.1, createdAt, updatedAt },
   ];
   const dataLocation = [
