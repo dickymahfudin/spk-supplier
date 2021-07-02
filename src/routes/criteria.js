@@ -7,7 +7,7 @@ const { criteria, link } = require('../models');
 
 router.get('/', async (req, res, next) => {
   const username = req.session.username;
-  return res.render('criteria/index', { title: 'Criteria', username });
+  return res.render('criteria/index', { title: 'Kriteria', username });
 });
 
 router.get('/table', async (req, res, next) => {
@@ -68,7 +68,7 @@ router.get('/form', async (req, res, next) => {
   return res.render('criteria/form', {
     action: '/criteria',
     value,
-    title: 'Criteria',
+    title: 'Kriteria',
   });
 });
 router.get('/form/:id', async (req, res, next) => {
@@ -77,7 +77,7 @@ router.get('/form/:id', async (req, res, next) => {
   return res.render('criteria/form', {
     action: `/criteria/${id}`,
     value,
-    title: 'Criteria',
+    title: 'Kriteria',
   });
 });
 
