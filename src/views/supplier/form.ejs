@@ -6,6 +6,18 @@
         <input type="text" name="name" class="form-control" placeholder="Supplier" required value="<%= location%>" />
       </div>
     </div>
+    <div class="col-md-12">
+      <div class="form-group">
+        <label>Alamat</label>
+        <input type="text" name="alamat" class="form-control" placeholder="Alamat" required value="<%= alamat%>" />
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="form-group">
+        <label>Contact</label>
+        <input type="text" name="contact" class="form-control" placeholder="Contact" required value="<%= contact%>" />
+      </div>
+    </div>
 
     <% forms.forEach( (form, i) => { const value = form.value || "" %>
     <div class="col-md-12">

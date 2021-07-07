@@ -21,6 +21,12 @@ module.exports = {
       name: {
         type: Sequelize.STRING(30),
       },
+      alamat: {
+        type: Sequelize.STRING,
+      },
+      contact: {
+        type: Sequelize.STRING,
+      },
       core: {
         type: Sequelize.FLOAT,
       },
