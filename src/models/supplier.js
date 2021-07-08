@@ -15,6 +15,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       user_id: DataTypes.INTEGER,
       name: DataTypes.STRING,
+      alamat: DataTypes.STRING,
+      contact: DataTypes.STRING,
       core: DataTypes.FLOAT,
       secondary: DataTypes.FLOAT,
       hasil: DataTypes.FLOAT,

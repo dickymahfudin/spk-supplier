@@ -33,9 +33,9 @@ router.post('/', async (req, res, next) => {
     req.flash('error', 'Nama Lokasi Tidak Boleh Sama');
     return res.redirect('/supplier');
   }
-  const location = await supplier.create({ name: data.name, user_id });
+  const location = await supplier.create({ name: data.name, user_id, alamat: data.alamat, contact: data.contact });
   for (const value of Object.keys(data)) {
-    if (value != 'name') {
+    if (value != 'name' && value != 'alamat' && value != 'contact') {
       await link.create({
         user_id,
         criteria_id: value,
@@ -50,14 +50,16 @@ router.post('/', async (req, res, next) => {
 
 router.post('/:id', async (req, res, next) => {
   const data = req.body;
-  console.log(req.body);
+  const { id } = req.params;
   const user_id = req.session.userId;
   const location = await supplier.findOne({
-    where: { name: data.name, user_id },
+    where: { id, user_id },
   });
-  console.log(location);
+  if (location) {
+    location.update({ name: data.name, alamat: data.alamat, contact: data.contact });
+  }
   for (const value of Object.keys(data)) {
-    if (value != 'name') {
+    if (value != 'name' && value != 'alamat' && value != 'contact') {
       await link.update(
         {
           user_id,
@@ -94,7 +96,9 @@ router.get('/form', async (req, res, next) => {
     action: '/supplier',
     forms,
     location: '',
-    title: '',
+    alamat: '',
+    contact: '',
+    title: 'Supplier',
   });
 });
 
@@ -103,7 +107,9 @@ router.get('/form/:id', async (req, res, next) => {
   const user_id = req.session.userId;
   const criterias = await criteria.getAll(user_id);
   const tempForms = await link.getAll({ supplier_id: id, user_id });
-  let location = tempForms[0]['supplier']['name'];
+  const location = tempForms[0]['supplier']['name'];
+  const alamat = tempForms[0]['supplier']['alamat'];
+  const contact = tempForms[0]['supplier']['contact'];
   const forms = criterias.map(criteria => {
     const passCriteria = criteria.dataValues;
     const find = tempForms.find(asli => asli.criteria_id == criteria.id) || '';
@@ -113,7 +119,9 @@ router.get('/form/:id', async (req, res, next) => {
     action: `/supplier/${id}`,
     forms,
     location,
-    title: '',
+    alamat,
+    contact,
+    title: 'Supplier',
   });
 });
 
