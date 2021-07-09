@@ -53,6 +53,7 @@ router.get('/table', async (req, res, next) => {
       name: e.name,
       alamat: e.alamat,
       contact: e.contact,
+      hasil: e.hasil,
     };
   });
   return res.json(jsonToTable(tempLocation));
