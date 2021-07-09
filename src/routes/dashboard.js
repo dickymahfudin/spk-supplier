@@ -48,7 +48,14 @@ router.get('/table', async (req, res, next) => {
     ],
     attributes: { exclude: ['createdAt', 'updatedAt'] },
   });
-  return res.json(jsonToTable(locations, 'dataValues'));
+  const tempLocation = locations.map(e => {
+    return {
+      name: e.name,
+      alamat: e.alamat,
+      contact: e.contact,
+    };
+  });
+  return res.json(jsonToTable(tempLocation));
 });
 
 module.exports = router;
