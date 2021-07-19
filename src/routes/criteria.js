@@ -13,7 +13,10 @@ router.get('/', async (req, res, next) => {
 router.get('/table', async (req, res, next) => {
   const user_id = req.session.userId;
   const criterias = await criteria.getAll(user_id);
-  return res.json(jsonToTable(criterias, 'dataValues'));
+  const datas = criterias.map((e, i) => {
+    return { id: e.id, name: e.name, bobot: `${e.bobot * 100}%` };
+  });
+  return res.json(jsonToTable(datas));
 });
 
 router.post('/', async (req, res, next) => {
