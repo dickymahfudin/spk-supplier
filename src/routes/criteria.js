@@ -4,6 +4,7 @@ const jsonToTable = require('../helpers/jsonToTable');
 const group = require('../helpers/group');
 const dataFormat = require('../helpers/dataFormat');
 const { criteria, link } = require('../models');
+const { Op } = require('sequelize');
 
 router.get('/', async (req, res, next) => {
   const username = req.session.username;
@@ -23,7 +24,11 @@ router.post('/', async (req, res, next) => {
   const { name, bobot } = req.body;
   const user_id = req.session.userId;
   const tempName = await criteria.findOne({ where: { name, user_id } });
-
+  const tempCriteria = (await criteria.findAll()).map(e => e.bobot).reduce((acc, val) => +(acc + val).toFixed(5));
+  if (parseFloat(tempCriteria) + parseFloat(bobot) > 1) {
+    req.flash('error', 'Jumlah Nilai Bobot Tidak boleh Lebih Dari 100%');
+    return res.redirect('/criteria');
+  }
   if (tempName) {
     req.flash('error', 'Nama Criteria Tidak Boleh Sama');
     return res.redirect('/criteria');
@@ -52,6 +57,21 @@ router.post('/', async (req, res, next) => {
 router.post('/:id', async (req, res, next) => {
   const { name, bobot } = req.body;
   const id = req.params.id;
+  const tempCriteria = +(
+    await criteria.findAll({
+      where: {
+        id: {
+          [Op.ne]: id,
+        },
+      },
+    })
+  )
+    .map(e => e.bobot)
+    .reduce((acc, val) => +(acc + val).toFixed(5));
+  if (parseFloat(tempCriteria) + parseFloat(bobot) > 1) {
+    req.flash('error', 'Jumlah Nilai Bobot Tidak boleh Lebih Dari 100%');
+    return res.redirect('/criteria');
+  }
   const tempName = await criteria.findByPk(id);
   await tempName.update({ name, bobot });
   req.flash('success', 'Data Berhasil Diubah');
