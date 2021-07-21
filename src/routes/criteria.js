@@ -24,7 +24,7 @@ router.post('/', async (req, res, next) => {
   const { name, bobot } = req.body;
   const user_id = req.session.userId;
   const tempName = await criteria.findOne({ where: { name, user_id } });
-  const tempCriteria = (await criteria.findAll()).map(e => e.bobot).reduce((acc, val) => +(acc + val).toFixed(5));
+  const tempCriteria = (await criteria.getAll(user_id)).map(e => e.bobot).reduce((acc, val) => +(acc + val).toFixed(5));
   if (parseFloat(tempCriteria) + parseFloat(bobot) > 1) {
     req.flash('error', 'Jumlah Nilai Bobot Tidak boleh Lebih Dari 100%');
     return res.redirect('/criteria');
@@ -57,17 +57,20 @@ router.post('/', async (req, res, next) => {
 router.post('/:id', async (req, res, next) => {
   const { name, bobot } = req.body;
   const id = req.params.id;
+  const user_id = req.session.userId;
   const tempCriteria = +(
     await criteria.findAll({
       where: {
         id: {
           [Op.ne]: id,
         },
+        user_id,
       },
     })
   )
     .map(e => e.bobot)
     .reduce((acc, val) => +(acc + val).toFixed(5));
+  console.log(tempCriteria);
   if (parseFloat(tempCriteria) + parseFloat(bobot) > 1) {
     req.flash('error', 'Jumlah Nilai Bobot Tidak boleh Lebih Dari 100%');
     return res.redirect('/criteria');
