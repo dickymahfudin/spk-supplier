@@ -58,7 +58,11 @@
 <div class="card shadow mb-4">
   <div class="card-header py-3">
     <h4>Data Supplier</h4>
+    <%if(totalCriterias == 1) {%>
     <a href="/hitung/hitung" class="float-right btn btn-sm btn-primary"><i class="fas fa-calculator"></i> Hitung</a>
+    <%} else {%>
+    <p class="float-right">Data Criteria Kurang dari 100</p>
+    <%}%>
   </div>
   <div class="card-body">
     <table class="table table-bordered" id="dataTable" url="/dashboard/table" width="100%" cellspacing="0"></table>

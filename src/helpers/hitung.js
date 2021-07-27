@@ -58,6 +58,7 @@ const hitung = ({ datas, criterias, db = false }) => {
       secondary,
       hasil,
       location: location.supplier,
+      kualitas: location.Kualitas,
     };
   }));
   return {

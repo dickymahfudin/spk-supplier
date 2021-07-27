@@ -8,7 +8,12 @@ const { Op } = require('sequelize');
 
 router.get('/', async (req, res, next) => {
   const username = req.session.username;
-  return res.render('criteria/index', { title: 'Kriteria', username });
+  const user_id = req.session.userId;
+  const criterias = await criteria.getAll(user_id);
+  const totalCriterias =
+    criterias.length !== 0 ? criterias.map(e => e.bobot).reduce((acc, val) => +(acc + val).toFixed(5)) : 0;
+  console.log(totalCriterias);
+  return res.render('criteria/index', { title: 'Kriteria', username, totalCriterias });
 });
 
 router.get('/table', async (req, res, next) => {
@@ -21,12 +26,16 @@ router.get('/table', async (req, res, next) => {
 });
 
 router.post('/', async (req, res, next) => {
-  const { name, bobot } = req.body;
+  const { name } = req.body;
+  const bobot = req.body.bobot / 100;
   const user_id = req.session.userId;
   const tempName = await criteria.findOne({ where: { name, user_id } });
-  const tempCriteria = (await criteria.getAll(user_id)).map(e => e.bobot).reduce((acc, val) => +(acc + val).toFixed(5));
+  let tempCriteria = (await criteria.getAll(user_id)).map(e => e.bobot);
+  if (tempCriteria.length !== 0) {
+    tempCriteria = tempCriteria.reduce((acc, val) => +(acc + val).toFixed(5));
+  }
   if (parseFloat(tempCriteria) + parseFloat(bobot) > 1) {
-    req.flash('error', 'Jumlah Nilai Bobot Tidak boleh Lebih Dari 100%');
+    req.flash('error', `Jumlah Nilai Bobot Tidak Boleh Lebih Dari 100`);
     return res.redirect('/criteria');
   }
   if (tempName) {
@@ -55,10 +64,11 @@ router.post('/', async (req, res, next) => {
 });
 
 router.post('/:id', async (req, res, next) => {
-  const { name, bobot } = req.body;
+  const { name } = req.body;
+  const bobot = req.body.bobot / 100;
   const id = req.params.id;
   const user_id = req.session.userId;
-  const tempCriteria = +(
+  let tempCriteria = (
     await criteria.findAll({
       where: {
         id: {
@@ -67,16 +77,17 @@ router.post('/:id', async (req, res, next) => {
         user_id,
       },
     })
-  )
-    .map(e => e.bobot)
-    .reduce((acc, val) => +(acc + val).toFixed(5));
-  console.log(tempCriteria);
+  ).map(e => e.bobot);
+
+  if (tempCriteria.length !== 0) {
+    tempCriteria = tempCriteria.reduce((acc, val) => +(acc + val).toFixed(5));
+  }
   if (parseFloat(tempCriteria) + parseFloat(bobot) > 1) {
-    req.flash('error', 'Jumlah Nilai Bobot Tidak boleh Lebih Dari 100%');
+    req.flash('error', 'Jumlah Nilai Bobot Tidak Boleh Lebih Dari 100');
     return res.redirect('/criteria');
   }
   const tempName = await criteria.findByPk(id);
-  await tempName.update({ name, bobot });
+  await tempName.update({ name, bobot: bobot });
   req.flash('success', 'Data Berhasil Diubah');
   return res.redirect('/criteria');
 });
@@ -100,6 +111,7 @@ router.get('/form', async (req, res, next) => {
 router.get('/form/:id', async (req, res, next) => {
   const id = req.params.id;
   const value = await criteria.findByPk(id);
+  value.bobot = value.bobot * 100;
   return res.render('criteria/form', {
     action: `/criteria/${id}`,
     value,

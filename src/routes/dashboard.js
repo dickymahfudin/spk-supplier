@@ -19,6 +19,8 @@ router.get('/', async (req, res, next) => {
   });
 
   const criterias = await criteria.getAll(user_id);
+  const totalCriterias =
+    criterias.length !== 0 ? criterias.map(e => e.bobot).reduce((acc, val) => +(acc + val).toFixed(5)) : 0;
   const rangking = supplierLength.length != 0 && supplierLength[0].hasil ? supplierLength[0].name : '';
   let tempData, datas, hitungs, hasils;
   if (locations.length > 1) {
@@ -35,12 +37,13 @@ router.get('/', async (req, res, next) => {
     rangking,
     hitungs,
     hasils,
+    totalCriterias,
   });
 });
 
 router.get('/table', async (req, res, next) => {
   const user_id = req.session.userId;
-  const locations = await supplier.findAll({
+  const locationsAddress = await supplier.findAll({
     where: { user_id },
     order: [
       ['hasil', 'DESC'],
@@ -48,11 +51,18 @@ router.get('/table', async (req, res, next) => {
     ],
     attributes: { exclude: ['createdAt', 'updatedAt'] },
   });
-  const tempLocation = locations.map(e => {
+  const locations = await link.getAll({ user_id });
+  const tempData = group(locations, 'supplier_id');
+  const criterias = await criteria.findAll({ where: { user_id } });
+  const datas = dataFormat(tempData);
+  const hitungs = hitung({ datas, criterias });
+  const test = hitungs.hasil.sort((a, b) => b.hasil - a.hasil || b.kualitas - a.kualitas);
+  const tempLocation = test.map(e => {
+    const location = locationsAddress.find(el => el.id === e.id);
     return {
-      name: e.name,
-      alamat: e.alamat,
-      contact: e.contact,
+      name: e.location,
+      alamat: location.alamat,
+      contact: location.contact,
       hasil: e.hasil,
     };
   });

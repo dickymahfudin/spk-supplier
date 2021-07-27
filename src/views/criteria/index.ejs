@@ -16,6 +16,9 @@
 
     <% const toastSuccess = messages.success %> <% const toastError = messages.error %>
   </div>
+  <%if(totalCriterias < 1) {%>
+  <p class="ml-3 float-right">Data Criteria Kurang dari 100</p>
+  <%}%>
 </div>
 
 <script>
